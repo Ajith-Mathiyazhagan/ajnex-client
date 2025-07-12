@@ -35,7 +35,7 @@ const Adminajnex = () => {
 
   useEffect(() => {
     fetchData();
-  }, [fromDate, toDate]); // fetch when date filters change
+  }, [fromDate]); // fetch when date filters change
 
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(data);
