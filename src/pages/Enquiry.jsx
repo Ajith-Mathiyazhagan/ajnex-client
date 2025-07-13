@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -12,6 +10,8 @@ import {
   faCalendarCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../firebase"; // 🔁 adjust path if needed
 
 const Enquiry = () => {
   const [formData, setFormData] = useState({
@@ -23,45 +23,42 @@ const Enquiry = () => {
     preferredTime: "",
     address: "",
   });
-  const nav=useNavigate()
+
+  const nav = useNavigate();
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    try {
+      await addDoc(collection(db, "enquiries"), {
+        ...formData,
+        createdAt: new Date(),
+      });
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  // if not already declared at top
+      alert("Enquiry submitted successfully!");
 
-  try {
-    const response = await axios.post(
-      `${process.env.REACT_APP_API_BASE_URL}/api/enquiry`,
-      formData
-    );
+      setFormData({
+        name: "",
+        mobile: "",
+        email: "",
+        service: "",
+        businessType: "",
+        preferredTime: "",
+        address: "",
+      });
 
-    console.log("Success:", response.data);
-    alert("Enquiry submitted successfully!");
-
-    setFormData({
-      name: "",
-      mobile: "",
-      email: "",
-      service: "",
-      businessType: "",
-      preferredTime: "",
-      address: "",
-    });
-
-    setTimeout(() => {
-      nav("/");
-    }, 800); // small delay to ensure smooth navigation
-  } catch (error) {
-    console.error("Error submitting form:", error);
-    alert("Something went wrong!");
-  }
-};
-
+      setTimeout(() => {
+        nav("/");
+      }, 800);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Something went wrong!");
+    }
+  };
 
   return (
     <div className="container py-5 ">
@@ -97,35 +94,27 @@ const handleSubmit = async (e) => {
               <FontAwesomeIcon icon={faPhone} className="me-2 highlight" />
               Mobile:
             </label>
-         <input
-  type="tel"
-  name="mobile"
-  className="form-control sharp-input"
-  maxLength={11} 
-  value={formData.mobile}
-  onChange={(e) => {
-    // Remove all non-digit characters
-    let value = e.target.value.replace(/\D/g, '');
-
-    // Format: Add space after first 5 digits
-    if (value.length > 5) {
-      value = value.slice(0, 5) + ' ' + value.slice(5, 10);
-    }
-
-    // Prevent more than 10 digits total
-    value = value.slice(0, 11); // includes space
-
-    handleChange({ target: { name: 'mobile', value } });
-  }}
-  onKeyPress={(e) => {
-    if (!/[0-9]/.test(e.key)) {
-      e.preventDefault();
-    }
-  }}
-  required
-/>
-
-
+            <input
+              type="tel"
+              name="mobile"
+              className="form-control sharp-input"
+              maxLength={11}
+              value={formData.mobile}
+              onChange={(e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 5) {
+                  value = value.slice(0, 5) + ' ' + value.slice(5, 10);
+                }
+                value = value.slice(0, 11);
+                handleChange({ target: { name: 'mobile', value } });
+              }}
+              onKeyPress={(e) => {
+                if (!/[0-9]/.test(e.key)) {
+                  e.preventDefault();
+                }
+              }}
+              required
+            />
           </div>
 
           {/* Email */}
@@ -157,13 +146,10 @@ const handleSubmit = async (e) => {
               onChange={handleChange}
               required
             >
-              <option value="" className="">
-                Select a Service
-              </option>
+              <option value="">Select a Service</option>
               <option>Web Development</option>
               <option>Digital Marketing</option>
               <option>Mobile App Development</option>
-
               <option>Billing & CRM</option>
               <option>Desktop Software</option>
             </select>
@@ -190,19 +176,17 @@ const handleSubmit = async (e) => {
               <option>Individual</option>
             </select>
           </div>
-          {/* Preferred Contact Time */}
+
+          {/* Preferred Time */}
           <div className="col-md-6">
             <label className="form-label fw-bold">
-              <FontAwesomeIcon
-                icon={faCalendarCheck}
-                className="me-2 highlight"
-              />
+              <FontAwesomeIcon icon={faCalendarCheck} className="me-2 highlight" />
               Preferred Contact Time:
             </label>
             <select
               name="preferredTime"
               className="form-select sharp-select"
-              value={formData.preferredTime || ""}
+              value={formData.preferredTime}
               onChange={handleChange}
             >
               <option value="">Select Time</option>
@@ -211,13 +195,11 @@ const handleSubmit = async (e) => {
               <option>Evening (4PM–8PM)</option>
             </select>
           </div>
+
           {/* Address */}
           <div className="col-12">
             <label className="form-label fw-bold">
-              <FontAwesomeIcon
-                icon={faMapMarkerAlt}
-                className="me-2 highlight"
-              />
+              <FontAwesomeIcon icon={faMapMarkerAlt} className="me-2 highlight" />
               Address:
             </label>
             <textarea
@@ -231,52 +213,48 @@ const handleSubmit = async (e) => {
           </div>
 
           {/* Submit */}
-          <div className="col-12 text-center mt-4 ">
-            <button
-              type="submit"
-              className="btn submit-btn px-4 py-2 fw-bold text-light"
-            >
+          <div className="col-12 text-center mt-4">
+            <button type="submit" className="btn submit-btn px-4 py-2 fw-bold text-light">
               Book a Call
             </button>
           </div>
         </form>
 
-        {/* Custom Styling */}
         <style>{`
-        .sharp-input,
-        .sharp-select,
-        .sharp-textarea {
-          border-radius: 0 !important;
-          border: 1px solid #ced4da;
-          box-shadow: none;
-          transition: border-color 0.3s ease-in-out;
-        }
+          .sharp-input,
+          .sharp-select,
+          .sharp-textarea {
+            border-radius: 0 !important;
+            border: 1px solid #ced4da;
+            box-shadow: none;
+            transition: border-color 0.3s ease-in-out;
+          }
 
-        .sharp-input:focus,
-        .sharp-select:focus,
-        .sharp-textarea:focus {
-          border-color: #FF5C38;
-          outline: none;
-          box-shadow: none;
-        }
+          .sharp-input:focus,
+          .sharp-select:focus,
+          .sharp-textarea:focus {
+            border-color: #FF5C38;
+            outline: none;
+            box-shadow: none;
+          }
 
-        .form-label {
-          font-weight: 600;
-        }
+          .form-label {
+            font-weight: 600;
+          }
 
-        .submit-btn {
-          background-color: #28a745;
-          color: #fff;
-          border-radius: 0;
-          border: none;
-          transition: all 0.3s ease-in-out;
-        }
+          .submit-btn {
+            background-color: #28a745;
+            color: #fff;
+            border-radius: 0;
+            border: none;
+            transition: all 0.3s ease-in-out;
+          }
 
-        .submit-btn:hover {
-          background-color: #218838;
-          transform: scale(1.03);
-        }
-      `}</style>
+          .submit-btn:hover {
+            background-color: #218838;
+            transform: scale(1.03);
+          }
+        `}</style>
       </div>
     </div>
   );

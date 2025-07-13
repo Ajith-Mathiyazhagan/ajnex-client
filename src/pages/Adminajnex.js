@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -11,6 +10,8 @@ import {
   faCheckCircle,
   faSearch
 } from '@fortawesome/free-solid-svg-icons';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../firebase'; // 🔁 path to your firebase.js
 
 const Adminajnex = () => {
   const todayDate = new Date().toISOString().split('T')[0];
@@ -23,22 +24,35 @@ const Adminajnex = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_BASE_URL}/api/enquiries/filter?from=${fromDate}&to=${toDate}`
+      const from = new Date(fromDate);
+      const to = new Date(toDate);
+      to.setHours(23, 59, 59, 999);
+
+      const enquiriesRef = collection(db, 'enquiries');
+      const q = query(
+        enquiriesRef,
+        where('createdAt', '>=', from),
+        where('createdAt', '<=', to)
       );
-      setData(response.data);
+
+      const querySnapshot = await getDocs(q);
+      const fetchedData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setData(fetchedData);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching data from Firebase:', error);
       alert("Failed to load data");
     }
   };
 
   useEffect(() => {
     fetchData();
-  }); // fetch when date filters change
+  }); // only when date changes
 
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(data);
+    const worksheet = XLSX.utils.json_to_sheet(filteredData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Enquiries");
     XLSX.writeFile(workbook, "Enquiries.xlsx");
@@ -56,7 +70,7 @@ const Adminajnex = () => {
       item.service,
       item.businessType,
       item.preferredTime,
-      new Date(item.created_at).toLocaleString(),
+      item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString() : '',
       checkedRows[item.id] ? "Yes" : "No"
     ]);
 
@@ -89,7 +103,6 @@ const Adminajnex = () => {
         Admin - Enquiry List
       </h2>
 
-      {/* Date Filter Inputs */}
       <div className="mb-4 d-flex justify-content-center flex-wrap gap-3">
         <div className="d-flex flex-column align-items-start">
           <label className="fw-bold mb-1">From:</label>
@@ -112,7 +125,6 @@ const Adminajnex = () => {
         </div>
       </div>
 
-      {/* Search Box */}
       <div className="mb-3 d-flex justify-content-end">
         <div className="position-relative w-100 w-md-50">
           <FontAwesomeIcon icon={faSearch} className="position-absolute top-50 start-0 translate-middle-y ms-3 text-muted" />
@@ -126,7 +138,6 @@ const Adminajnex = () => {
         </div>
       </div>
 
-      {/* Export Buttons */}
       <div className="mb-3 d-flex justify-content-end gap-2 flex-wrap">
         <button className="btn btn-outline-primary" onClick={exportToExcel}>
           <FontAwesomeIcon icon={faFileExcel} className="me-2" />
@@ -138,7 +149,6 @@ const Adminajnex = () => {
         </button>
       </div>
 
-      {/* Enquiry Table */}
       <div className="table-responsive">
         <table className="table table-bordered text-center table-striped">
           <thead className='table-success'>
@@ -169,7 +179,11 @@ const Adminajnex = () => {
                   <td>{item.service}</td>
                   <td>{item.businessType}</td>
                   <td>{item.preferredTime}</td>
-                  <td>{new Date(item.created_at).toLocaleString()}</td>
+                  <td>
+                    {item.createdAt?.toDate
+                      ? item.createdAt.toDate().toLocaleString()
+                      : ""}
+                  </td>
                   <td>
                     <input
                       type="checkbox"
