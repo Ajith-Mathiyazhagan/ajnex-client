@@ -19,32 +19,34 @@ const Footer = () => {
           </div>
 
           {/* Quick Links */}
-          <div className="col-md-4 mb-3  ">
-            <h6 className="fw-semibold text-center">Quick Links</h6>
-            <ul className="list-unstyled mx-auto w-50 ">
-              <li
-                className="text-white text-decoration-none mx-3 "
-                onClick={() => navigate("/service")}
-                style={{ cursor: "pointer" }}
-              >
-                Services
-              </li>
-              <li
-                className="text-white text-decoration-none mx-3"
-                onClick={() => navigate("/about")}
-                style={{ cursor: "pointer" }}
-              >
-                About
-              </li>
-              <li
-                className="text-white text-decoration-none mx-3"
-                onClick={() => navigate("/enquiry")}
-                style={{ cursor: "pointer" }}
-              >
-                Contact
-              </li>
-            </ul>
-          </div>
+      <div className="col-12 col-md-4 mb-3">
+  <h6 className="fw-semibold text-center text-md-start">Quick Links</h6>
+  <ul className="list-unstyled d-flex flex-column align-items-center align-items-md-start gap-2 p-0 m-0">
+    <li
+      className="text-white text-decoration-none"
+      onClick={() => navigate("/service")}
+      style={{ cursor: "pointer" }}
+    >
+      Services
+    </li>
+    <li
+      className="text-white text-decoration-none"
+      onClick={() => navigate("/about")}
+      style={{ cursor: "pointer" }}
+    >
+      About
+    </li>
+    <li
+      className="text-white text-decoration-none"
+      onClick={() => navigate("/enquiry")}
+      style={{ cursor: "pointer" }}
+    >
+      Contact
+    </li>
+  </ul>
+</div>
+
+
 
           {/* Contact & Social */}
           <div className="col-md-4 mb-3">
@@ -92,10 +94,11 @@ const Footer = () => {
           </div>
         </div>
         <hr className="border-light" />
-        <p className="text-center mb-0">
-          &copy; {new Date().getFullYear()} Ajnex Digital solution. All Rights
-          Reserved.
-        </p>
+      <p className="text-center mb-0">
+  &copy; {new Date().getFullYear()} AjNex Digital Solution. Built with 🧡 in India — <a href="https://ajnex.in" className="text-white text-decoration-none">ajnex.in</a>
+</p>
+
+
       </div>
     </footer>
   );
