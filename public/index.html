@@ -2,41 +2,44 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <link rel="icon"  href="%PUBLIC_URL%/favicon.ico" sizes="32x32" />
 
+    <!-- ✅ Favicon & Tab Icon -->
+    <link rel="icon" href="https://ajnex.in/favicon.ico" sizes="32x32" />
+    <link rel="apple-touch-icon" href="https://ajnex.in/favicon.ico" />
+
+    <!-- ✅ Basic Meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
 
     <!-- ✅ SEO Meta Tags -->
-    <title>AjNex | Digital Marketing & App Development Company</title>
+    <title>AjNex | Digital Marketing & App Development Agency</title>
     <meta name="description" content="AjNex is a leading digital marketing and app development company helping businesses grow online with SEO, branding, and smart applications." />
     <meta name="keywords" content="AjNex, digital marketing India, SEO, app development, branding, web development company, social media marketing" />
     <meta name="author" content="AjNex Technologies" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://ajnex.in/" />
 
-    <!-- ✅ Open Graph for Social Sharing -->
+    <!-- ✅ Open Graph Tags (WhatsApp, FB) -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://ajnex.in/" />
     <meta property="og:title" content="AjNex | Digital Marketing & App Development Company" />
     <meta property="og:description" content="Grow your business online with AjNex – expert digital marketing, SEO, app development, and branding." />
-    <meta property="og:image" content="https://ajnex.in/assets/banner.png" /> <!-- 🖼️ Use a real banner/preview image here -->
+    <meta property="og:image" content="https://ajnex.in/assets/banner.png" />
 
-    <!-- ✅ Twitter Card Tags -->
+    <!-- ✅ Twitter Cards -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://ajnex.in/" />
     <meta property="twitter:title" content="AjNex | Digital Marketing & App Development Company" />
     <meta property="twitter:description" content="AjNex helps startups and enterprises grow with SEO, social media, branding and smart applications." />
     <meta property="twitter:image" content="https://ajnex.in/assets/banner.png" />
 
-    <!-- ✅ Google Structured Data -->
+    <!-- ✅ Google Structured Data (Fixed) -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "wep page",
+        "@type": "WebPage",
         "name": "AjNex - Digital Marketing & App Development",
-        "description": "AjNex helps businesses grow through expert SEO, branding, and app development services."
+        "description": "AjNex helps businesses grow through expert SEO, branding, and app development services.",
         "url": "https://ajnex.in",
         "logo": "https://ajnex.in/favicon.ico"
       }
@@ -59,8 +62,7 @@
       crossorigin="anonymous"
     />
 
-    <!-- ✅ PWA Icons -->
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/favicon.ico" />
+    <!-- ✅ PWA -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   </head>
   <body>
@@ -73,5 +75,26 @@
       integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO"
       crossorigin="anonymous"
     ></script>
+
+    <!-- ✅ 🍪 Cookie Consent Banner -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js"></script>
+    <script>
+      window.addEventListener("load", function () {
+        window.cookieconsent.initialise({
+          palette: {
+            popup: { background: "#000" },
+            button: { background: "#f1d600" }
+          },
+          theme: "classic",
+          content: {
+            message: "We use cookies to ensure the best experience on our site.",
+            dismiss: "Got it!",
+            link: "Learn more",
+            href: "https://ajnex.in/privacy"
+          }
+        });
+      });
+    </script>
   </body>
 </html>
