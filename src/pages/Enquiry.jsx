@@ -31,45 +31,34 @@ const Enquiry = () => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    // 1. Save to Firestore
-    await addDoc(collection(db, "enquiries"), {
-      ...formData,
-      createdAt: new Date(),
-    });
+    try {
+      await addDoc(collection(db, "enquiries"), {
+        ...formData,
+        createdAt: new Date(),
+      });
 
-    // 2. Send email via FormSubmit
-    await fetch("https://formsubmit.co/ajax/ajithm1820@gmail.com", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+      alert("Enquiry submitted successfully!");
 
-    alert("Enquiry submitted successfully!");
-    setFormData({
-      name: "",
-      mobile: "",
-      email: "",
-      service: "",
-      businessType: "",
-      preferredTime: "",
-      address: "",
-    });
-
-    setTimeout(() => {
-      nav("/");
-    }, 800);
-  } catch (error) {
-    console.error("Error submitting form:", error);
-    alert("Something went wrong!");
-  }
-};
-
+      setFormData({
+        name: "",
+        mobile: "",
+        email: "",
+        service: "",
+        businessType: "",
+        preferredTime: "",
+        address: "",
+      });
+       
+      setTimeout(() => {
+        nav("/");
+      }, 800);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("Something went wrong!");
+    }
+  };
 
   return (
     <div className="container py-5 ">
