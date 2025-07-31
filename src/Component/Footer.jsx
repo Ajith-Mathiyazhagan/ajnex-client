@@ -52,7 +52,7 @@ const Footer = () => {
           <div className="col-md-4 mb-3">
             <h6 className="fw-semibold">Connect With Us</h6>
             <p>
-              <i className="bi bi-envelope-fill me-2"></i>info@ajnex.com
+              <i className="bi bi-envelope-fill me-2"></i>info@ajnex.in
             </p>
             <p>
               <i className="bi bi-telephone-fill me-2"></i>+91 88700 61820
@@ -95,7 +95,7 @@ const Footer = () => {
         </div>
         <hr className="border-light" />
       <p className="text-center mb-0">
-  &copy; {new Date().getFullYear()} AjNex Digital Solution. Built with 🧡 in India — <a href="https://ajnex.in" className="text-white text-decoration-none">ajnex.in</a>
+  &copy; {new Date().getFullYear()} AjNex Digital Solution. Built with ❤️ in India — <a href="https://ajnex.in" className="text-white text-decoration-none">ajnex.in</a>
 </p>
 
 
