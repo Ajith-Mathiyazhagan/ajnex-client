@@ -38,6 +38,14 @@ const Enquiry = () => {
         ...formData,
         createdAt: new Date(),
       });
+      //  Send to Make.com Webhook
+      await fetch("https://hook.eu2.make.com/law9ct3wx5v26kxnkpjf492rbmjhiw67", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       alert("Enquiry submitted successfully!");
 
@@ -50,7 +58,7 @@ const Enquiry = () => {
         preferredTime: "",
         address: "",
       });
-       
+
       setTimeout(() => {
         nav("/");
       }, 800);
@@ -101,12 +109,12 @@ const Enquiry = () => {
               maxLength={11}
               value={formData.mobile}
               onChange={(e) => {
-                let value = e.target.value.replace(/\D/g, '');
+                let value = e.target.value.replace(/\D/g, "");
                 if (value.length > 5) {
-                  value = value.slice(0, 5) + ' ' + value.slice(5, 10);
+                  value = value.slice(0, 5) + " " + value.slice(5, 10);
                 }
                 value = value.slice(0, 11);
-                handleChange({ target: { name: 'mobile', value } });
+                handleChange({ target: { name: "mobile", value } });
               }}
               onKeyPress={(e) => {
                 if (!/[0-9]/.test(e.key)) {
@@ -180,7 +188,10 @@ const Enquiry = () => {
           {/* Preferred Time */}
           <div className="col-md-6">
             <label className="form-label fw-bold">
-              <FontAwesomeIcon icon={faCalendarCheck} className="me-2 highlight" />
+              <FontAwesomeIcon
+                icon={faCalendarCheck}
+                className="me-2 highlight"
+              />
               Preferred Contact Time:
             </label>
             <select
@@ -199,7 +210,10 @@ const Enquiry = () => {
           {/* Address */}
           <div className="col-12">
             <label className="form-label fw-bold">
-              <FontAwesomeIcon icon={faMapMarkerAlt} className="me-2 highlight" />
+              <FontAwesomeIcon
+                icon={faMapMarkerAlt}
+                className="me-2 highlight"
+              />
               Address:
             </label>
             <textarea
@@ -214,7 +228,10 @@ const Enquiry = () => {
 
           {/* Submit */}
           <div className="col-12 text-center mt-4">
-            <button type="submit" className="btn submit-btn px-4 py-2 fw-bold text-light">
+            <button
+              type="submit"
+              className="btn submit-btn px-4 py-2 fw-bold text-light"
+            >
               Book a Call
             </button>
           </div>
