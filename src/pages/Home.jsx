@@ -79,6 +79,9 @@ const Home = () => {
             transform: scale(1.05);
             transition: all 0.3s ease-in-out;
           }
+            
+          
+
         `}</style>
       </div>
       <About/>
