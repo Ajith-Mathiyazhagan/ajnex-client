@@ -51,7 +51,27 @@
     <meta property="twitter:image" content="https://ajnex.in/assets/banner.png" />
 
     <!-- ✅ Google Structured Data (Fixed) -->
-   <script type="application/ld+json">
+   
+<!-- ✅ WebSite Schema -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "url": "https://ajnex.in",
+  "name": "AjNex",
+  "publisher": {
+    "@type": "Organization",
+    "name": "AjNex",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://ajnex.in/android-chrome-192x192.png"
+    }
+  }
+}
+</script>
+
+<!-- ✅ Organization Schema -->
+<script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
@@ -66,6 +86,8 @@
   ]
 }
 </script>
+
+
 
 
     <!-- ✅ Fonts & Icons -->
